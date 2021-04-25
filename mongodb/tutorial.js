@@ -26,7 +26,9 @@ printObj(db.adminCommand("listDatabases"));
 
 db = db.getSiblingDB("test");
 printObj(db);
-printObj(db.collection.save( { a: 1 }));
+printObj(db.collection.save({
+  a: 1
+}));
 
 printObj(db.getCollectionNames());
 
@@ -41,7 +43,9 @@ db = db.getSiblingDB("myDB");
 printObj(db);
 printObj(db.adminCommand("listDatabases"));
 
-printObj(db.movie.insert({"name":"tutorials point"}));
+printObj(db.movie.insert({
+  "name": "tutorials point"
+}));
 
 db.dropDatabase();
 printObj(db.adminCommand("listDatabases"));
@@ -51,3 +55,20 @@ db = db.getSiblingDB("test");
 
 db.createCollection("mycollection");
 printObj(db.getCollectionNames());
+
+db.createCollection("mycol", {
+  capped: true,
+  autoIndexId: true,
+  size: 6142800,
+  max: 10000
+});
+printObj(db.getCollectionNames());
+
+db.tutorialspoint.insert({"name" : "tutorialspoint"});
+
+printObj(db.getCollectionNames());
+
+db.mycollection.drop();
+
+printObj(db.getCollectionNames());
+
