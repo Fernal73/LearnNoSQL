@@ -64,7 +64,9 @@ db.createCollection("mycol", {
 });
 printObj(db.getCollectionNames());
 
-db.tutorialspoint.insert({"name" : "tutorialspoint"});
+db.tutorialspoint.insert({
+  "name": "tutorialspoint"
+});
 
 printObj(db.getCollectionNames());
 
@@ -72,3 +74,37 @@ db.mycollection.drop();
 
 printObj(db.getCollectionNames());
 
+/* eslint-disable */
+db.mycol.insert({
+  _id: ObjectId(),
+  title: "MongoDB Overview",
+  description: "MongoDB is no sql database",
+  by: "tutorials point",
+  url: "http://www.tutorialspoint.com",
+  tags: ["mongodb", "database", "NoSQL"],
+  likes: 100
+});
+/* eslint-enable */
+
+db.post.insert([{
+  title: "MongoDB Overview",
+  description: "MongoDB is no sql database",
+  by: "tutorials point",
+  url: "http://www.tutorialspoint.com",
+  tags: ["mongodb", "database", "NoSQL"],
+  likes: 100
+},{
+  title: "NoSQL Database",
+  description: "NoSQL database doesn't have tables",
+  by: "tutorials point",
+  url: "http://www.tutorialspoint.com",
+  tags: ["mongodb", "database", "NoSQL"],
+  likes: 20,
+  comments: [{
+    user: "user1",
+    message: "My first comment",
+    dateCreated: new Date(2013, 11, 10, 2, 35),
+    like: 0
+  }]
+}
+]);
