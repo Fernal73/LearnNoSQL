@@ -6,11 +6,21 @@ function printObj(obj) {
   /* eslint-enable */
 }
 
+// connect
 /* eslint-disable */
 let conn = new Mongo();
 /* eslint-enable */
 printObj(conn);
-let db = conn.getDB("myDatabase");
+
+// drop existing databases
+let db = conn.getDB("myDB");
+db.dropDatabase();
+
+printObj(db);
+db = db.getSiblingDB("sampleDB");
+db.dropDatabase();
+
+db = db.getSiblingDB("myDatabase");
 printObj(db);
 printObj(db.adminCommand("listDatabases"));
 
@@ -25,4 +35,19 @@ var documentArray = cursor.toArray();
 var doc = documentArray[0];
 printObj(doc);
 
-db = db.getSiblingDB("sampleDB");
+printObj(db.stats());
+
+db = db.getSiblingDB("myDB");
+printObj(db);
+printObj(db.adminCommand("listDatabases"));
+
+printObj(db.movie.insert({"name":"tutorials point"}));
+
+db.dropDatabase();
+printObj(db.adminCommand("listDatabases"));
+
+
+db = db.getSiblingDB("test");
+
+db.createCollection("mycollection");
+printObj(db.getCollectionNames());
