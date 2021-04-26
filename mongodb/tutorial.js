@@ -32,10 +32,7 @@ printObj(db.collection.save({
 
 printObj(db.getCollectionNames());
 
-var cursor = db.collection.find();
-var documentArray = cursor.toArray();
-var doc = documentArray[0];
-printObj(doc);
+db.collection.find().forEach(printObj);
 
 printObj(db.stats());
 
@@ -51,7 +48,7 @@ db.dropDatabase();
 printObj(db.adminCommand("listDatabases"));
 
 
-db = db.getSiblingDB("test");
+db = db.getSiblingDB("myDB");
 
 db.createCollection("mycollection");
 printObj(db.getCollectionNames());
@@ -86,14 +83,14 @@ db.mycol.insert({
 });
 /* eslint-enable */
 
-db.post.insert([{
+db.mycol.insert([{
   title: "MongoDB Overview",
   description: "MongoDB is no sql database",
   by: "tutorials point",
   url: "http://www.tutorialspoint.com",
   tags: ["mongodb", "database", "NoSQL"],
   likes: 100
-},{
+}, {
   title: "NoSQL Database",
   description: "NoSQL database doesn't have tables",
   by: "tutorials point",
@@ -106,5 +103,106 @@ db.post.insert([{
     dateCreated: new Date(2013, 11, 10, 2, 35),
     like: 0
   }]
-}
-]);
+}]);
+
+db.mycol.find().forEach(printObj);
+
+printObj(db.mycol.findOne());
+
+// RDBMS where clause equivalents
+
+printObj("Where clause equivalents");
+
+printObj("by:tutorials point");
+db.mycol.find({
+  "by": "tutorials point"
+}).forEach(printObj);
+
+
+printObj("{likes: {$lt:50}}");
+db.mycol.find({
+  "likes": {
+    $lt: 50
+  }
+}).forEach(printObj);
+
+printObj("{likes: {$lte:50}}");
+db.mycol.find({
+  "likes": {
+    $lte: 50
+  }
+}).forEach(printObj);
+
+printObj("{likes: {$gt:50}}");
+db.mycol.find({
+  "likes": {
+    $gt: 50
+  }
+}).forEach(printObj);
+
+printObj("{likes: {$gte:50}}");
+db.mycol.find({
+  "likes": {
+    $gte: 50
+  }
+}).forEach(printObj);
+
+printObj("{likes: {$ne:50}}");
+db.mycol.find({
+  "likes": {
+    $ne: 50
+  }
+}).forEach(printObj);
+
+printObj("{$and:[{'by':'tutorials point'},{'title': 'MongoDB Overview'}]}");
+db.mycol.find({
+  $and: [{
+    "by": "tutorials point"
+  }, {
+    "title": "MongoDB Overview"
+  }]
+}).forEach(printObj);
+
+printObj("{$or:[{'by':'tutorials point'},{'title': 'MongoDB Overview'}]}");
+db.mycol.find({
+  $or: [{
+    "by": "tutorials point"
+  }, {
+    "title": "MongoDB Overview"
+  }]
+}).forEach(printObj);
+
+printObj("{'likes': {$gt: 10},$or: [{'by': 'tutorials point'}, {'title': 'MongoDB Overview'}]}");
+db.mycol.find({
+  "likes": {
+    $gt: 10
+  },
+  $or: [{
+    "by": "tutorials point"
+  }, {
+    "title": "MongoDB Overview"
+  }]
+}).forEach(printObj);
+
+printObj("Update data");
+db.mycol.update({
+  title: "MongoDB Overview"
+}, {
+  $set: {
+    title: "New MongoDB Tutorial"
+  }
+});
+db.mycol.find().forEach(printObj);
+
+printObj("multi Update data");
+db.mycol.update({
+  title: "NoSQL Database"
+}, {
+  $set: {
+    title: "NoSQL DB Tutorial"
+  }
+}, {
+  multi: true
+});
+
+db.mycol.find().forEach(printObj);
