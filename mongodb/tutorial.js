@@ -47,18 +47,12 @@ printObj(db.movie.insert({
 db.dropDatabase();
 printObj(db.adminCommand("listDatabases"));
 
-
 db = db.getSiblingDB("myDB");
 
 db.createCollection("mycollection");
 printObj(db.getCollectionNames());
 
-db.createCollection("mycol", {
-  capped: true,
-  autoIndexId: true,
-  size: 6142800,
-  max: 10000
-});
+db.createCollection("mycol");
 printObj(db.getCollectionNames());
 
 db.tutorialspoint.insert({
@@ -209,9 +203,16 @@ db.mycol.find().forEach(printObj);
 
 printObj("save new data");
 let obj = db.mycol.find().limit(1);
+let vals = obj.toArray();
+let id = vals[0]._id;
 db.mycol.save({
-  "_id": obj._id,
+  "_id": id,
   "title": "Tutorials Point New Topic",
   "by": "Tutorials Point"
 });
+db.mycol.find().forEach(printObj);
+
+printObj("remove data");
+printObj("remove data will not work with capped collections");
+db.mycol.remove({"title":"MongoDB Overview"});
 db.mycol.find().forEach(printObj);
