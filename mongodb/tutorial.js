@@ -186,20 +186,20 @@ db.mycol.find({
 
 printObj("Update data");
 db.mycol.update({
-  title: "MongoDB Overview"
+  title: "NoSQL Database"
 }, {
   $set: {
-    title: "New MongoDB Tutorial"
+    title: "NoSQL DataBase"
   }
 });
 db.mycol.find().forEach(printObj);
 
 printObj("multi Update data");
 db.mycol.update({
-  title: "NoSQL Database"
+  title: "MongoDB Overview"
 }, {
   $set: {
-    title: "NoSQL DB Tutorial"
+    title: "MongoDB Tutorial"
   }
 }, {
   multi: true
