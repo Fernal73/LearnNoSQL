@@ -206,3 +206,12 @@ db.mycol.update({
 });
 
 db.mycol.find().forEach(printObj);
+
+printObj("save new data");
+let obj = db.mycol.find().limit(1);
+db.mycol.save({
+  "_id": obj._id,
+  "title": "Tutorials Point New Topic",
+  "by": "Tutorials Point"
+});
+db.mycol.find().forEach(printObj);
