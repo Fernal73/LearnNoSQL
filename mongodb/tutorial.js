@@ -97,6 +97,13 @@ db.mycol.insert([{
     dateCreated: new Date(2013, 11, 10, 2, 35),
     like: 0
   }]
+},{
+  title: "Neo4j Overview",
+  description: "Neo4j is no sql database",
+  by_user: "Neo4j",
+  url: "http://www.neo4j.com",
+  tags: ["neo4j", "database", "NoSQL"],
+  likes: 750
 }]);
 
 db.mycol.find().forEach(printObj);
@@ -214,5 +221,49 @@ db.mycol.find().forEach(printObj);
 
 printObj("remove data");
 printObj("remove data will not work with capped collections");
-db.mycol.remove({"title":"MongoDB Overview"});
+db.mycol.remove({
+  "title": "MongoDB Overview"
+});
 db.mycol.find().forEach(printObj);
+
+db.mycol.find({}, {
+  "title": 1,
+  _id: 0
+}).forEach(printObj);
+
+db.mycol.find({}, {
+  "title": 1,
+  _id: 0
+}).limit(2).forEach(printObj);
+
+db.mycol.find().sort({
+  KEY: 1
+}).forEach(printObj);
+
+db.mycol.find({}, {
+  "title": 1,
+  _id: 0
+}).sort({
+  "title": -1
+}).forEach(printObj);
+
+db.mycol.ensureIndex({
+  "title": 1
+});
+
+db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$sum : 1}}}]).forEach(printObj);
+
+db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$sum : "$likes"}}}]).forEach(printObj);
+
+db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$avg : "$likes"}}}]).forEach(printObj);
+
+db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$min : "$likes"}}}]).forEach(printObj);
+
+db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$max : "$likes"}}}]).forEach(printObj);
+
+db.mycol.aggregate([{$group : {_id : "$by_user", url : {$push: "$url"}}}]).forEach(printObj);
+
+db.mycol.aggregate([{$group : {_id : "$by_user", url : {$addToSet : "$url"}}}]).forEach(printObj);
+
+db.mycol.aggregate([{$group : {_id : "$by_user", first_url : {$first : "$url"}}}]).forEach(printObj);
+db.mycol.aggregate([{$group : {_id : "$by_user", last_url : {$last : "$url"}}}]).forEach(printObj);
