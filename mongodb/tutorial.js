@@ -16,6 +16,21 @@ printObj(conn);
 let db = conn.getDB("myDB");
 db.dropDatabase();
 
+db.getUsers().forEach(printObj);
+// create admin user
+db = db.getSiblingDB("admin");
+if (db.system.users.find({
+  user: "linus"
+}).count() == 0) {
+  db.createUser({
+    user: "linus",
+    pwd: "secret123",
+    roles: [{
+      role: "userAdminAnyDatabase",
+      db: "admin"
+    }]
+  });
+}
 printObj(db);
 db = db.getSiblingDB("sampleDB");
 db.dropDatabase();
@@ -97,7 +112,7 @@ db.mycol.insert([{
     dateCreated: new Date(2013, 11, 10, 2, 35),
     like: 0
   }]
-},{
+}, {
   title: "Neo4j Overview",
   description: "Neo4j is no sql database",
   by_user: "Neo4j",
@@ -251,19 +266,82 @@ db.mycol.ensureIndex({
   "title": 1
 });
 
-db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$sum : 1}}}]).forEach(printObj);
+db.mycol.aggregate([{
+  $group: {
+    _id: "$by_user",
+    num_tutorial: {
+      $sum: 1
+    }
+  }
+}]).forEach(printObj);
 
-db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$sum : "$likes"}}}]).forEach(printObj);
+db.mycol.aggregate([{
+  $group: {
+    _id: "$by_user",
+    num_tutorial: {
+      $sum: "$likes"
+    }
+  }
+}]).forEach(printObj);
 
-db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$avg : "$likes"}}}]).forEach(printObj);
+db.mycol.aggregate([{
+  $group: {
+    _id: "$by_user",
+    num_tutorial: {
+      $avg: "$likes"
+    }
+  }
+}]).forEach(printObj);
 
-db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$min : "$likes"}}}]).forEach(printObj);
+db.mycol.aggregate([{
+  $group: {
+    _id: "$by_user",
+    num_tutorial: {
+      $min: "$likes"
+    }
+  }
+}]).forEach(printObj);
 
-db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$max : "$likes"}}}]).forEach(printObj);
+db.mycol.aggregate([{
+  $group: {
+    _id: "$by_user",
+    num_tutorial: {
+      $max: "$likes"
+    }
+  }
+}]).forEach(printObj);
 
-db.mycol.aggregate([{$group : {_id : "$by_user", url : {$push: "$url"}}}]).forEach(printObj);
+db.mycol.aggregate([{
+  $group: {
+    _id: "$by_user",
+    url: {
+      $push: "$url"
+    }
+  }
+}]).forEach(printObj);
 
-db.mycol.aggregate([{$group : {_id : "$by_user", url : {$addToSet : "$url"}}}]).forEach(printObj);
+db.mycol.aggregate([{
+  $group: {
+    _id: "$by_user",
+    url: {
+      $addToSet: "$url"
+    }
+  }
+}]).forEach(printObj);
 
-db.mycol.aggregate([{$group : {_id : "$by_user", first_url : {$first : "$url"}}}]).forEach(printObj);
-db.mycol.aggregate([{$group : {_id : "$by_user", last_url : {$last : "$url"}}}]).forEach(printObj);
+db.mycol.aggregate([{
+  $group: {
+    _id: "$by_user",
+    first_url: {
+      $first: "$url"
+    }
+  }
+}]).forEach(printObj);
+db.mycol.aggregate([{
+  $group: {
+    _id: "$by_user",
+    last_url: {
+      $last: "$url"
+    }
+  }
+}]).forEach(printObj);
