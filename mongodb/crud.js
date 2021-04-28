@@ -49,7 +49,11 @@ db.people.insertMany([{
   ]
 }, {
   name: "Kathy",
-  age: 23
+  age: 23,
+  address: {
+    country: "US",
+    city: "Los Angeles"
+  }
 }]);
 
 //Will replace only first matching
@@ -144,6 +148,50 @@ db.people.update({
   }
 });
 
+db.people.find({
+  name: "Thomas"
+}).forEach(printjson);
+printjson(db.people.findOne({
+  name: "Tom"
+}));
+db.people.find({
+  name: "Tom"
+}, {
+  _id: 0,
+  age: 1
+}).pretty();
+db.people.find({
+  name: "Kathy"
+}, {
+  _id: 0,
+  age: 1
+}).pretty();
+
+db.people.find({
+  "address.country": "US"
+}).pretty();
+
+db.people.find({
+  "address.country": "US"
+}, {
+  "name": true,
+  "address.city": true
+}).pretty();
+
+// New in MongoDB 3.2
+db.people.deleteOne({
+  name: "Tom"
+});
+
+db.people.deleteMany({
+  name: "Tom"
+});
+
+db.people.remove({});
+
+db.people.find().forEach(printjson);
+db.people.drop();
+
 db.students.insertMany([{
   "_id": 1,
   "grades": [80, 85, 90]
@@ -166,7 +214,3 @@ db.students.update({
 
 db.students.find().forEach(printjson);
 db.students.drop();
-
-
-db.people.find().forEach(printjson);
-db.people.drop();
