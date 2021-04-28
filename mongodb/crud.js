@@ -23,7 +23,8 @@ db.people.insertMany([{
   age: 45
 }, {
   name: "Tim",
-  age: 28
+  age: 28,
+  marks: [50, 60, 70]
 }, {
   name: "Jim",
   age: 28
@@ -32,16 +33,85 @@ db.people.insertMany([{
   age: 38
 }, {
   name: "John",
-  age: 25
+  age: 25,
+  marks: [{
+      subject: "English",
+      marks: 90
+    }, {
+      subject: "Maths",
+      marks: 100
+    },
+    {
+      subject: "Computes",
+      marks: 20
+    }
+  ]
 }, {
   name: "Kathy",
   age: 23
 }]);
 
 //Will replace only first matching
-db.people.updateOne({name: "Thomas"},{$set: {age: 69, name: "Tom"}});
-db.people.updateMany({name: "Jim"},{$set:{name: "James"}});
-db.people.updateMany({name: "Kathy"},{$set:{age: 30, salary:50000}});
-db.people.replaceOne({name:"John"}, {name:"Lakmal",age:25,address:"Sri Lanka"});
+db.people.updateOne({
+  name: "Thomas"
+}, {
+  $set: {
+    age: 69,
+    name: "Tom"
+  }
+});
+db.people.updateMany({
+  name: "Jim"
+}, {
+  $set: {
+    name: "James"
+  }
+});
+db.people.updateMany({
+  name: "Kathy"
+}, {
+  $set: {
+    age: 30,
+    salary: 50000
+  }
+});
+db.people.replaceOne({
+  name: "John"
+}, {
+  name: "Lakmal",
+  age: 25,
+  address: "Sri Lanka",
+  marks: [{
+      subject: "English",
+      marks: 90
+    }, {
+      subject: "Maths",
+      marks: 100
+    },
+    {
+      subject: "Computes",
+      marks: 20
+    }
+  ]
+});
+
+db.people.updateOne({
+  name: "Tim",
+  marks: 50
+}, {
+  "$set": {
+    "marks.$": 55
+  }
+});
+
+db.people.updateOne({
+  name: "Lakmal",
+  "marks.subject": "English"
+}, {
+  "$set": {
+    "marks.$.marks": 85
+  }
+});
+
 db.people.find().forEach(printjson);
 db.people.drop();
