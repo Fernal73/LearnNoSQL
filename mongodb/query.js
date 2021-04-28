@@ -32,6 +32,11 @@ db.students.insertMany([{
   }
 ]);
 
+db.students.update(
+ {firstName: "Gm"}, 
+ {$set: {sex: "F"}} 
+);
+
 db.students.find({}).forEach(printjson);
 
 db.students.find({
