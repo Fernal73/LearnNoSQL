@@ -20,7 +20,8 @@ db.people.save({
 
 db.people.insertMany([{
   name: "Thomas",
-  age: 45
+  age: 45,
+  siblings: ["Marie", "Bob", "Kevin", "Alex"]
 }, {
   name: "Tim",
   age: 28,
@@ -112,6 +113,60 @@ db.people.updateOne({
     "marks.$.marks": 85
   }
 });
+
+db.people.update({
+  name: "Thomas"
+}, {
+  $push: {
+    nicknames: "Tommy"
+  }
+});
+db.people.update({
+  name: "Thomas"
+}, {
+  $pull: {
+    nicknames: "Tommy"
+  }
+});
+
+db.people.update({
+  name: "Thomas"
+}, {
+  $pop: {
+    siblings: -1
+  }
+});
+db.people.update({
+  name: "Thomas"
+}, {
+  $pop: {
+    siblings: 1
+  }
+});
+
+db.students.insertMany([{
+  "_id": 1,
+  "grades": [80, 85, 90]
+}, {
+  "_id": 2,
+  "grades": [88, 90, 92]
+}, {
+  "_id": 3,
+  "grades": [85, 100, 90]
+}]);
+
+db.students.update({
+  _id: 1,
+  grades: 80
+}, {
+  $set: {
+    "grades.$": 82
+  }
+});
+
+db.students.find().forEach(printjson);
+db.students.drop();
+
 
 db.people.find().forEach(printjson);
 db.people.drop();
