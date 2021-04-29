@@ -95,6 +95,11 @@ db.test.find({}).sort({ "name" : 1}).forEach(printjson);
 print(db.test.find({}).count());
 
 db.test.find({}).sort({ "name" : -1}).skip(1).limit(2).forEach(printjson);
+db.test.find({name: {$regex: "ny"}}).forEach(printjson);
+db.test.find({name: {$regex: "ny$"}}).forEach(printjson);
+db.test.find({name: {$regex: "ny$",
+$options: "i"}}).forEach(printjson);
+db.test.find({name: /ny$/}).forEach(printjson);
 
 
 db.test.remove({});
